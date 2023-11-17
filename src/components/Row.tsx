@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { ElementData } from '../model'
-import { DispatchContext } from '../reducer'
+import { useAppDispatch } from '../hooks'
 
 const Row: React.FC<ElementData> = ({ position, name, weight, symbol }) => {
 
-  let dispatch = useContext(DispatchContext)
+  let dispatch = useAppDispatch()
 
   const handleDelete = () => {
     if (dispatch) {

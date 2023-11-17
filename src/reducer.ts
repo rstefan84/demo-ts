@@ -1,5 +1,6 @@
 import React from "react";
 import { ElementData, ElementDataList } from "./model";
+import { combineReducers } from "redux";
 
 export type Action =
   | { type: 'delete', payload: number }
@@ -17,8 +18,6 @@ export const defaultState: State = {
   elements: [],
   selected: null,
 }
-
-export const DispatchContext = React.createContext<React.Dispatch<Action> | null>(null)
 
 export function elementsReducer(state: State = defaultState, action: Action): State {
   switch (action.type) {
@@ -41,3 +40,10 @@ export function elementsReducer(state: State = defaultState, action: Action): St
       return state;
   }
 }
+
+export default combineReducers(
+  {
+    elementsReducer,
+    // other reducer
+  }
+)
