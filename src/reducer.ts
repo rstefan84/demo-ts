@@ -8,15 +8,29 @@ export type Action =
   | { type: 'filter', payload: string }
   | { type: 'save', payload: ElementData }
   | { type: 'init', payload: ElementDataList }
+  | { type: 'sort' }
 
 export interface State {
   elements: ElementDataList,
-  selected: ElementData | null
+  selected: ElementData | null,
+  sortType: any,
 }
+
+export const sortTypes = {
+  up: {
+    text: '↑',
+    fn: (a: ElementData, b: ElementData) => b.position - a.position
+  },
+  down: {
+    text: '↓',
+    fn: (a: ElementData, b: ElementData) => a.position - b.position
+  }
+};
 
 export const defaultState: State = {
   elements: [],
   selected: null,
+  sortType: sortTypes.down,
 }
 
 export function elementsReducer(state: State = defaultState, action: Action): State {
@@ -34,6 +48,14 @@ export function elementsReducer(state: State = defaultState, action: Action): St
       return {
         ...state,
         elements: [...elements]
+      }
+
+    case 'sort':
+      let currentSortType = state.sortType
+      let nextSortType = currentSortType === sortTypes.up ? sortTypes.down : sortTypes.up
+      return {
+        ...state,
+        sortType: nextSortType
       }
 
     default:

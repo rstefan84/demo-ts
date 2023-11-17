@@ -24,6 +24,7 @@ const ElementsView: React.FC<ElementsViewProps> = ({ elements, currentPage = 1, 
   let [page, setPage] = useState(1)
   let dispatch = useAppDispatch()
   let stateElements = useAppSelector(state => state.elementsReducer.elements)
+  let sortType = useAppSelector(state => state.elementsReducer.sortType)
 
   useEffect(() => {
     if (pageAsString) {
@@ -32,12 +33,12 @@ const ElementsView: React.FC<ElementsViewProps> = ({ elements, currentPage = 1, 
       setPage(currentPage)
     }
     dispatch({ type: 'init', payload: elements })
-  }, [currentPage, pageAsString])
+  }, [currentPage, pageAsString, dispatch, elements])
 
   let startIndex = (page - 1) * showPerPage
   let endIndex = startIndex + showPerPage;
 
-  const rowsElements = stateElements.slice(startIndex, endIndex);
+  const rowsElements = [...stateElements].sort(sortType.fn).slice(startIndex, endIndex);
 
   let rows = rowsElements.map(element =>
     <Row key={element.position} {...element} />
@@ -45,6 +46,7 @@ const ElementsView: React.FC<ElementsViewProps> = ({ elements, currentPage = 1, 
 
   const onPageUp = () => setPage(p => p + 1)
   const onPageDown = () => setPage(p => p - 1)
+  const handleSort = () => dispatch({ type: 'sort' })
 
   return (
     <div>
@@ -52,7 +54,7 @@ const ElementsView: React.FC<ElementsViewProps> = ({ elements, currentPage = 1, 
       <table className='table'>
         <thead>
           <tr>
-            <th>#</th>
+            <th>#&nbsp;<button onClick={handleSort}>{sortType.text}</button></th>
             <th>Name</th>
             <th>Weight</th>
             <th>Symbol</th>

@@ -1,3 +1,7 @@
+# Extended Table Sort Function
+
+> https://www.npmjs.com/package/react-data-table-component
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
